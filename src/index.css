@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,33 +7,32 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 20%;
+    --foreground: 0 0% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 20%;
+    --card-foreground: 0 0% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
-    --primary: 168 76% 36%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 24 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 20%;
-    --muted: 0 0% 96%;
+    --secondary: 30 100% 97%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 30 50% 96%;
     --muted-foreground: 0 0% 45%;
-    --accent: 168 76% 36%;
+    --accent: 30 100% 60%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 168 76% 36%;
+    --border: 30 20% 88%;
+    --input: 30 20% 88%;
+    --ring: 24 100% 50%;
     --radius: 0.5rem;
-    
-    --tt-teal: #1ABC9C;
-    --tt-teal-dark: #16A085;
-    --tt-coral: #FF5A5F;
-    --tt-coral-dark: #E74C3C;
-    --tt-dark: #2C3E50;
-    --tt-gray: #7F8C8D;
-    --tt-light-gray: #ECF0F1;
+
+    --tt-saffron: #FF6B00;
+    --tt-orange: #FF9933;
+    --tt-orange-dark: #E55A00;
+    --tt-dark: #1A1A1A;
+    --tt-gray: #6B7280;
+    --tt-light: #FFF8F0;
   }
 }
 
@@ -46,40 +45,51 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
   }
 }
 
 
 
 @layer utilities {
-  .text-teal {
-    color: var(--tt-teal);
+  .text-saffron {
+    color: var(--tt-saffron);
   }
-  .bg-teal {
-    background-color: var(--tt-teal);
+  .bg-saffron {
+    background-color: var(--tt-saffron);
   }
-  .bg-teal-dark {
-    background-color: var(--tt-teal-dark);
+  .bg-saffron-dark {
+    background-color: var(--tt-orange-dark);
   }
-  .text-coral {
-    color: var(--tt-coral);
+  .text-orange-brand {
+    color: var(--tt-orange);
   }
-  .bg-coral {
-    background-color: var(--tt-coral);
+  .bg-orange-brand {
+    background-color: var(--tt-orange);
   }
-  .bg-coral-dark {
-    background-color: var(--tt-coral-dark);
+  .border-saffron {
+    border-color: var(--tt-saffron);
   }
-  .border-teal {
-    border-color: var(--tt-teal);
+  .hover\:bg-saffron-dark:hover {
+    background-color: var(--tt-orange-dark);
   }
-  .hover\:bg-teal-dark:hover {
-    background-color: var(--tt-teal-dark);
-  }
-  .hover\:bg-coral-dark:hover {
-    background-color: var(--tt-coral-dark);
-  }
+  /* Legacy aliases so existing classes still work */
+  .text-teal { color: var(--tt-saffron); }
+  .bg-teal { background-color: var(--tt-saffron); }
+  .bg-teal-dark { background-color: var(--tt-orange-dark); }
+  .text-coral { color: var(--tt-orange); }
+  .bg-coral { background-color: var(--tt-saffron); }
+  .bg-coral-dark { background-color: var(--tt-orange-dark); }
+  .border-teal { border-color: var(--tt-saffron); }
+  .hover\:bg-teal-dark:hover { background-color: var(--tt-orange-dark); }
+  .hover\:bg-coral-dark:hover { background-color: var(--tt-orange-dark); }
+  .hover\:text-teal:hover { color: var(--tt-saffron); }
+  .focus\:ring-teal:focus { --tw-ring-color: var(--tt-saffron); }
+  .bg-teal\/10 { background-color: rgba(255, 107, 0, 0.1); }
+  .border-teal\/20 { border-color: rgba(255, 107, 0, 0.2); }
 }
 
 /* Custom scrollbar */

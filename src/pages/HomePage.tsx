@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Calendar, Clock, ChevronRight, Star, Phone, Play, CheckCircle, Users, Shield, Headphones, ArrowRight } from 'lucide-react';
+import { MapPin, Calendar, Clock, ChevronRight, Phone, Play, CheckCircle, Users, Shield, Headphones, ArrowRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { destinations, packages, testimonials, themeCategories, findDestinationByValue } from '../data/destinations';
-
+import { destinations, packages, themeCategories, findDestinationByValue } from '../data/destinations';
+import BannerCarousel from '../components/BannerCarousel';
 const HomePage = () => {
   const [selectedDestination, setSelectedDestination] = useState('');
   const [selectedDuration, setSelectedDuration] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [activeTab, setActiveTab] = useState('international');
   const [activeDuration, setActiveDuration] = useState('4-6');
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [bottomDestination, setBottomDestination] = useState('');
   const [isVisible, setIsVisible] = useState<{[key: string]: boolean}>({});
 
@@ -31,13 +30,6 @@ const HomePage = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
   }, []);
 
   const durations = [
@@ -80,24 +72,16 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
-      {/* Hero Section */}
-      <section className="relative py-16 lg:py-24 overflow-hidden bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left">
-              <h1 className="text-4xl lg:text-5xl font-bold text-tt-dark mb-4 leading-tight">
-                Customize & Book<br />
-                <span className="text-teal">Amazing Holiday Packages</span>
-              </h1>
-              <p className="text-lg text-gray-600 mb-8">
-                650+ Travel Agents serving 65+ Destinations worldwide
-              </p>
-              
-              {/* Search Form */}
-              <div className="bg-white rounded-xl shadow-card p-4 border border-gray-100">
-                <div className="grid md:grid-cols-4 gap-4">
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+      {/* Banner Carousel */}
+      <BannerCarousel />
+
+      {/* Search Form floating below banner */}
+      <section className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="bg-white rounded-xl shadow-card p-4 border border-gray-100 -mt-10 relative z-10">
+            <div className="grid md:grid-cols-4 gap-4">
+              <div className="relative">
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <select
                       value={selectedDestination}
                       onChange={(e) => setSelectedDestination(e.target.value)}
@@ -137,39 +121,18 @@ const HomePage = () => {
                   </div>
                   <Link
                     to={`/tour-packages?destination=${selectedDestination}&duration=${selectedDuration}&month=${selectedMonth}`}
-                    className="bg-coral hover:bg-coral-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center shadow-md"
+                    className="bg-[#FF6B00] hover:bg-[#E55A00] text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center shadow-md"
                   >
                     Explore
                   </Link>
                 </div>
                 <p className="text-sm text-gray-500 mt-3 text-center md:text-left">
                   Destination not sure?{' '}
-                  <Link to="/honeymoon-places" className="text-teal hover:underline font-medium">
+                  <Link to="/honeymoon-places" className="text-[#FF6B00] hover:underline font-medium">
                     Click here!
                   </Link>
                 </p>
               </div>
-            </div>
-            
-            <div className="hidden lg:block relative">
-              <img
-                src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"
-                alt="Travel"
-                className="rounded-2xl shadow-xl w-full object-cover h-[500px]"
-              />
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-4 border border-gray-100">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-teal/10 rounded-full flex items-center justify-center">
-                    <Users className="w-6 h-6 text-teal" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-tt-dark">22 Lac+</p>
-                    <p className="text-sm text-gray-500">Happy Travelers</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -425,76 +388,6 @@ const HomePage = () => {
                 <p className="text-gray-600">{item.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section id="testimonials" data-animate className={`py-16 bg-white transition-all duration-700 ${isVisible['testimonials'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl lg:text-3xl font-bold text-tt-dark mb-8 text-center">
-            Over 40 Lac+ Happy Travelers
-          </h2>
-          <p className="text-center text-gray-600 mb-12">
-            Real travelers. Real stories. Real opinions to help you make the right choice.
-          </p>
-          
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            {/* Testimonial Images */}
-            <div className="grid grid-cols-4 gap-2">
-              {testimonials.slice(0, 8).map((t, i) => (
-                <button
-                  key={t.id}
-                  onClick={() => setCurrentTestimonial(i)}
-                  className={`relative aspect-square rounded-lg overflow-hidden transition-all ${
-                    currentTestimonial === i ? 'ring-4 ring-teal scale-105 z-10 shadow-lg' : 'opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-            
-            {/* Testimonial Content */}
-            <div className="bg-gray-50 p-8 rounded-xl border border-gray-100">
-              <div className="flex items-center mb-4">
-                {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                ))}
-              </div>
-              <h3 className="text-xl font-bold text-tt-dark mb-2">
-                {testimonials[currentTestimonial].name}'s {testimonials[currentTestimonial].destination} Holiday
-              </h3>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {testimonials[currentTestimonial].tags.map((tag) => (
-                  <span key={tag} className="px-3 py-1 bg-white text-gray-600 border border-gray-200 rounded-full text-sm">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-              <p className="text-gray-700 mb-6 italic">
-                "{testimonials[currentTestimonial].review}"
-              </p>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <div className="flex items-center">
-                  <img
-                    src={testimonials[currentTestimonial].image}
-                    alt={testimonials[currentTestimonial].name}
-                    className="w-12 h-12 rounded-full object-cover mr-3 border-2 border-white shadow-sm"
-                  />
-                  <div>
-                    <p className="font-semibold text-tt-dark">{testimonials[currentTestimonial].name}</p>
-                    <p className="text-sm text-gray-500">{testimonials[currentTestimonial].location}, {testimonials[currentTestimonial].date}</p>
-                  </div>
-                </div>
-              </div>
-              <Link
-                to={`/tour-packages?destination=${testimonials[currentTestimonial].destination}`}
-                className="mt-6 block w-full bg-teal hover:bg-teal-dark text-white text-center py-3 rounded-lg font-semibold transition-colors shadow-md"
-              >
-                Get Quotes for this Package
-              </Link>
-            </div>
           </div>
         </div>
       </section>

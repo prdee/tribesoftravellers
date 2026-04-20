@@ -38,24 +38,31 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        saffron: {
+          DEFAULT: '#FF6B00',
+          dark: '#E55A00',
+          light: '#FF9933',
+        },
+        // Legacy aliases
         teal: {
-          DEFAULT: '#1ABC9C',
-          dark: '#16A085',
-          light: '#48C9B0',
+          DEFAULT: '#FF6B00',
+          dark: '#E55A00',
+          light: '#FF9933',
         },
         coral: {
-          DEFAULT: '#FF5A5F',
-          dark: '#E74C3C',
-          light: '#FF7B7F',
+          DEFAULT: '#FF6B00',
+          dark: '#E55A00',
+          light: '#FF9933',
         },
         tt: {
-          dark: '#2C3E50',
-          gray: '#7F8C8D',
-          light: '#ECF0F1',
+          dark: '#1A1A1A',
+          gray: '#6B7280',
+          light: '#FFF8F0',
         },
       },
       fontFamily: {
-        sans: ['Open Sans', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['Poppins', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",

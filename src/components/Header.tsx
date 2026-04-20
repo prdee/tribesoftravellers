@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Phone, User, ChevronDown, Menu, X, Gift, BookOpen, Users } from 'lucide-react';
+import { Phone, User, ChevronDown, Menu, X, Gift, BookOpen, Users, LogOut, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from './AuthModal';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const mainNavItems = [
     { name: 'Honeymoon Packages', path: '/honeymoon-places', hasDropdown: true },
@@ -33,42 +38,56 @@ const Header = () => {
       {/* Top Bar */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-auto py-2 text-sm">
-            <div className="flex items-center space-x-4">
-              <Link to="/" className="flex items-center">
-                <div className="flex items-center">
-                  <img 
-                    src="/logo.png" 
-                    alt="The Tribes of Travellers" 
-                    className="h-16 md:h-20 object-contain py-1"
-                  />
-                </div>
-              </Link>
-            </div>
+          <div className="flex items-center justify-end text-sm py-1">
             <div className="hidden md:flex items-center space-x-6">
-              <a href="tel:1800-123-5555" className="flex items-center text-teal font-semibold hover:text-teal-dark transition-colors">
+              <a href="tel:+919281449440" className="flex items-center text-saffron font-semibold hover:text-saffron-dark transition-colors">
                 <Phone className="w-4 h-4 mr-1" />
-                1800-123-5555
+                +91 92814 49440
               </a>
               {topLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className="flex items-center text-gray-600 hover:text-teal transition-colors whitespace-nowrap"
+                  className="flex items-center text-gray-600 hover:text-saffron transition-colors whitespace-nowrap"
                 >
                   <link.icon className="w-4 h-4 mr-1" />
                   {link.name}
                 </Link>
               ))}
-              <a 
-                href="https://wa.me/18001235555?text=Hi!%20I%20want%20to%20plan%20a%20holiday." 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center text-gray-600 hover:text-teal transition-colors font-medium whitespace-nowrap"
-              >
-                <User className="w-4 h-4 mr-1" />
-                Contact Us
-              </a>
+              {/* Auth */}
+              {user ? (
+                <div className="relative">
+                  <button onClick={() => setUserMenuOpen(!userMenuOpen)} className="flex items-center gap-2 text-gray-700 hover:text-saffron transition">
+                    {user.photoURL
+                      ? <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full object-cover" />
+                      : <div className="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-bold">{user.name?.[0]}</div>
+                    }
+                    <span className="text-sm font-medium max-w-[100px] truncate">{user.name}</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                  {userMenuOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-xl border border-gray-100 py-2 z-50">
+                      {(user.role === 'admin' || user.role === 'superadmin') && (
+                        <Link to="/admin" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                          <LayoutDashboard className="w-4 h-4" /> Admin Panel
+                        </Link>
+                      )}
+                      {user.role === 'agent' && (
+                        <Link to="/agent/dashboard" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                          <LayoutDashboard className="w-4 h-4" /> Agent Dashboard
+                        </Link>
+                      )}
+                      <button onClick={() => { signOut(); setUserMenuOpen(false); }} className="flex items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-gray-50 w-full text-left">
+                        <LogOut className="w-4 h-4" /> Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button onClick={() => setAuthOpen(true)} className="flex items-center gap-1 text-gray-600 hover:text-saffron transition font-medium whitespace-nowrap">
+                  <User className="w-4 h-4" /> Sign In
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -77,7 +96,11 @@ const Header = () => {
       {/* Main Navigation */}
       <div className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to="/" className="flex items-center shrink-0">
+              <img src="/logo.png" alt="The Tribes of Travellers" className="h-16 md:h-20 w-auto object-contain" />
+            </Link>
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-1">
               {mainNavItems.map((item) => (
@@ -169,9 +192,15 @@ const Header = () => {
                 {item.name}
               </Link>
             ))}
+            {!user && (
+              <button onClick={() => { setAuthOpen(true); setMobileMenuOpen(false); }}
+                className="block w-full text-center border border-[#FF6B00] text-[#FF6B00] px-6 py-3 rounded-md font-semibold">
+                Sign In / Sign Up
+              </button>
+            )}
             <Link
               to="/tour-packages"
-              className="block w-full text-center bg-coral text-white px-6 py-3 rounded-md font-semibold mt-4"
+              className="block w-full text-center bg-[#FF6B00] text-white px-6 py-3 rounded-md font-semibold mt-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               Plan My Holiday
@@ -179,6 +208,8 @@ const Header = () => {
           </div>
         </div>
       )}
+
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
     </header>
   );
 };
